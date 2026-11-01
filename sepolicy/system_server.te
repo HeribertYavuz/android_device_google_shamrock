@@ -1,0 +1,5 @@
+get_prop(system_server, vendor_camera_prop)
+
+# Input device configuration under /vendor/usr/{idc,keylayout} is already
+# labeled vendor_idc_file/vendor_keylayout_file and granted to system_server
+# by AOSP's private policy.

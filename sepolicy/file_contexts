@@ -1,0 +1,53 @@
+# Fpc Fingerprint
+/data/fpc(/.*)?					u:object_r:fpc_data_file:s0
+/dev/socket/fpce(/.*)?				u:object_r:fpce_socket:s0
+/sys/devices(/platform)?/soc/soc:fpc1020(/.*)?		u:object_r:fpc_sysfs:s0
+
+# Goodix Fingerprint
+/dev/goodix_fp					u:object_r:gx_fpd_device:s0
+/data/gf_data(/.*)?                             u:object_r:gx_fpd_data_file:s0
+/persist/data/gxfp(/.*)?			u:object_r:gx_fpd_data_file:s0
+
+# HALs
+/(vendor|system/vendor)/bin/hw/android\.hardware\.drm@1\.0-service\.widevine         u:object_r:hal_drm_widevine_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.drm@1\.1-service\.clearkey         u:object_r:hal_drm_clearkey_exec:s0
+
+# Camera
+/(vendor|system/vendor)/bin/mm-qcamera-daemon    u:object_r:mm-qcamerad_exec:s0
+
+# Ir
+/dev/peel_ir					u:object_r:lirc_device:s0
+
+# Light HAL
+/(vendor|system/vendor)/bin/hw/android\.hardware\.light@2\.0-service\.shamrock u:object_r:hal_light_default_exec:s0
+
+# Power HAL
+/sys/android_touch/doubletap2wake     u:object_r:sysfs_tap_to_wake:s0
+
+# Rild
+/(vendor|system/vendor)/radio/qcril_database/qcril.db			u:object_r:rild_file:s0
+
+# Shell Script
+/(vendor|system/vendor)/bin/init\.goodix\.sh    u:object_r:init_fingerprint_exec:s0
+
+# Sys files
+/sys/devices(/platform)?/soc/78b6000\.i2c/i2c-2/2-[0-9a-f]+/leds(/.*)?		u:object_r:sysfs_leds:s0
+/sys/devices(/platform)?/soc/leds-qpnp-[0-9]+/leds(/.*)?				u:object_r:sysfs_leds:s0
+/sys/devices(/platform)?/soc/78b7000\.i2c/i2c-3/3-[0-9a-f]+/enable_dt2w			u:object_r:proc_touchpanel:s0
+/sys/devices(/platform)?/soc/78b7000\.i2c/i2c-3/3-[0-9a-f]+/disable_keys		u:object_r:proc_touchpanel:s0
+
+# USB HAL
+/(vendor|system/vendor)/bin/hw/android\.hardware\.usb@1\.0-service\.shamrock       u:object_r:hal_usb_default_exec:s0
+
+# Root symlinks (system-as-root) -- BOARD_ROOT_EXTRA_SYMLINKS in BoardConfig.mk.
+# Without these labels e2fsdroid fails to label the system image root.
+/dsp		u:object_r:rootfs:s0
+/firmware	u:object_r:rootfs:s0
+/persist	u:object_r:rootfs:s0
+# Installed at the root dir by system/sepolicy's file_contexts.bin module.
+/file_contexts\.bin	u:object_r:rootfs:s0
+
+# wcnss_service is defined in device/qcom/sepolicy and needs its own exec label
+# so init performs the init -> wcnss_service domain transition. The generic
+# vendor policy only labels the cnss tools, not wcnss_service itself.
+/(vendor|system/vendor)/bin/wcnss_service	u:object_r:wcnss_service_exec:s0
